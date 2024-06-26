@@ -3,12 +3,12 @@ import pickle
 import logging
 from typing import List, Callable
 
-
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-
+import utils
 
 
 def copy_reset(df:pd.DataFrame):
@@ -44,26 +44,7 @@ def remove_missing_values(df:pd.DataFrame):
     
     return cleaned_df
 
-def numeric_plots(df:pd.DataFrame, col_names:List[str], save_path=None):
-    colors = sns.color_palette("husl", len(col_names))
-    fig, axes = plt.subplots(len(col_names), 3, figsize=(15, len(col_names)*5))
-    for i, col_name in enumerate(col_names):
-        sns.scatterplot(df[col_name], ax=axes[i, 0], color=colors[i])
-        axes[i, 0].set_title(f'{col_name}_Scatterplot')
-        axes[i, 0].set_xlabel(col_name)
 
-        sns.boxplot(df[col_name], ax=axes[i, 1], orient='h', color=colors[i])
-        axes[i, 1].set_title(f'{col_name  }_Boxplot')
-        axes[i, 1].set_xlabel(col_name)
-
-        sns.histplot(df[col_name], ax=axes[i, 2], color=colors[i])
-        axes[i, 2].set_title(f'{col_name}_Histogram')
-        axes[i, 2].set_xlabel(col_name)
-
-    plt.tight_layout()
-    if save_path is not None:
-        plt.savefig(save_path)
-    plt.show()
 
 if __name__ == "__main__":
     log_dir = "log"
@@ -78,14 +59,25 @@ if __name__ == "__main__":
     logging.info("Preprosessing")
     df_stocks["Date"] = pd.to_datetime(df_stocks.Date)
     df_stocks.sort_values("Date", inplace=True)
+
+    logging.debug("plotting...")
+    utils.numeric_plots(df_stocks, col_names=["Date","Open","High","Low","Close","Volume"], save_path="save.png")
+
     df_stocks["High_s1"] = df_stocks["High"].shift(1)
     df_stocks["Low_s1"] = df_stocks["Low"].shift(1)
     df_stocks["Close_s1"] = df_stocks["Close"].shift(1)
+    df_stocks["Volume_s1"] = df_stocks["Volume"].shift(1)
     df_stocks["delta_s1"] = (df_stocks["High"] - df_stocks["Low"]).shift(1)
     df_stocks = remove_missing_values(df_stocks)
+    df_stocks["Volume_s1"] = np.log(df_stocks['Volume_s1'])
+    df_stocks.replace(-np.inf, 0, inplace=True)
+    print(df_stocks)
 
-    logging.info("Saved...")
-    df_stocks.to_csv("data\\processed_data.csv")
+    
+    
+
+    logging.debug("Saved...")
+    df_stocks.to_csv("data\\preprocessed_data.csv")
 
 
 
