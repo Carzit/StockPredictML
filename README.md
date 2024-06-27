@@ -1,6 +1,7 @@
 # Sliding Window Stock Prediction with Traditional ML Models
 
->Stock market prediction has always been a critical issue in financial analysis and investment decision-making. Accurate prediction models can provide valuable insights into market trends, enabling investors to make informed decisions. However, due to the high volatility and nonlinear characteristics of the stock market, building a stable and efficient prediction model has always been a huge challenge. This paper aims to explore the use of multiple machine learning models to predict Nasdaq stock market data and compare the performance of the models under different models and sliding window strategies in order to find a more effective stock price prediction method.
+> Stock market prediction has always been a critical issue in financial analysis and investment decision-making. Accurate prediction models can provide valuable insights into market trends, enabling investors to make informed decisions. However, due to the high volatility and nonlinear characteristics of the stock market, building a stable and efficient prediction model has always been a huge challenge. This paper aims to explore the use of multiple machine learning models to predict Nasdaq stock market data and compare the performance of the models under different models and sliding window strategies in order to find a more effective stock price prediction method.
+
 ![](https://github.com/Carzit/StockPredict/blob/main/plots/SVR.png)
 ## 1. Batch Processing
 Simple execution of my report experiments
