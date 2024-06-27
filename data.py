@@ -1,6 +1,6 @@
 import os
-import pickle
 import logging
+import argparse
 from typing import List, Callable
 
 import pandas as pd
@@ -24,44 +24,38 @@ def copy_reset_decorator(func: Callable):
 
 @copy_reset_decorator
 def remove_missing_values(df:pd.DataFrame):
-    """
-    打印存在缺失值的行index和缺失值所在列名，返回去除所有缺失值所在行后的df。
-
-    Parameters:
-    df (pd.DataFrame): 输入的DataFrame
-
-    Returns:
-    pd.DataFrame: 去除所有缺失值所在行后的DataFrame
-    """
-    # 遍历每一行，查找缺失值
     for index, row in df.iterrows():
         missing_columns = row[row.isnull()].index.tolist()
         if missing_columns:
             logging.info(f'Index {index} has missing values in columns: {missing_columns}')
-    
-    # 去除所有缺失值所在的行
     cleaned_df = df.dropna()
     
     return cleaned_df
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Data Preprocessor")
+    parser.add_argument("--data", type=str, required=True, help="Path of raw Data csv file")
+    parser.add_argument("--save", type=str, required=True, help="Path of processed csv file to be saved")
+    parser.add_argument("--log", type=str, default=os.path.join("log", "data.txt"), help="Path of log file")
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
-    log_dir = "log"
+    args = parse_args()
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format='%(asctime)s - [%(levelname)s] : %(message)s',
-        handlers=[logging.FileHandler(os.path.join(log_dir, "DATE.txt")), logging.StreamHandler()])
+        handlers=[logging.FileHandler(args.log), logging.StreamHandler()])
     
-    logging.info("Loading data...")
-    df_stocks = pd.read_csv("data/stocks/ALOT.csv")
+    logging.debug("Loading data...")
+    df_stocks = pd.read_csv(args.data)
 
-    logging.info("Preprosessing")
+    logging.debug("Preprosessing")
     df_stocks["Date"] = pd.to_datetime(df_stocks.Date)
     df_stocks.sort_values("Date", inplace=True)
 
-    logging.debug("plotting...")
-    utils.numeric_plots(df_stocks, col_names=["Date","Open","High","Low","Close","Volume"], save_path="save.png")
+    logging.debug("Plotting...")
+    utils.numeric_plots(df_stocks, col_names=["Date","Open","High","Low","Close","Volume"], save_path="eda.png")
 
     df_stocks["High_s1"] = df_stocks["High"].shift(1)
     df_stocks["Low_s1"] = df_stocks["Low"].shift(1)
@@ -73,11 +67,8 @@ if __name__ == "__main__":
     df_stocks.replace(-np.inf, 0, inplace=True)
     print(df_stocks)
 
-    
-    
-
     logging.debug("Saved...")
-    df_stocks.to_csv("data\\preprocessed_data.csv")
+    df_stocks.to_csv(args.save)
 
 
 
