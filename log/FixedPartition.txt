@@ -1,0 +1,16 @@
+2024-06-28 01:56:36,207 - [DEBUG] : Loading data...
+2024-06-28 01:56:36,222 - [INFO] : Fixed Data Partitioning
+2024-06-28 01:56:36,224 - [DEBUG] : Doing Linear Regression
+2024-06-28 01:56:36,230 - [DEBUG] : Doing Elastic Net Regression
+2024-06-28 01:56:36,922 - [INFO] : Best parameters found: {'alpha': 0.1, 'l1_ratio': 1.0}
+2024-06-28 01:56:36,923 - [INFO] : Best cross-validation score: 0.9968486855193397
+2024-06-28 01:56:36,923 - [DEBUG] : Doing SVR (GridSearch)
+2024-06-28 01:58:25,034 - [INFO] : Best parameters found: {'C': 50.0, 'gamma': 0.1, 'kernel': 'rbf'}
+2024-06-28 01:58:25,034 - [INFO] : Best cross-validation score: 0.9976752799129306
+2024-06-28 01:58:29,757 - [DEBUG] : Doing Random Forest
+2024-06-28 01:58:31,100 - [DEBUG] : Doing AdaBoost
+2024-06-28 01:58:31,314 - [INFO] : Linear Regression RMSE: 0.057109154619587044
+2024-06-28 01:58:31,314 - [INFO] : Elastic Net RMSE: 0.06978011805858525
+2024-06-28 01:58:31,315 - [INFO] : SVR RMSE: 0.051546919845516626
+2024-06-28 01:58:31,315 - [INFO] : Random Forest RMSE: 0.058310725185056006
+2024-06-28 01:58:31,316 - [INFO] : AdaBoost RMSE: 0.19248010683603417
